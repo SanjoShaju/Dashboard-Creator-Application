@@ -29,6 +29,6 @@ The source code contains :
 * Tools Menu of the application
 <img src="Screenshots/dashboard_ToolsMenu.JPG" width="50%"/>
 * Add new data or open already created dashboards menu.
-<img src="Screenshots/dashboard_OpenNew.JPG" width="50%"/>
+<img src="Screenshots/dashboard_OpenNew.jpg" width="50%"/>
 * Dashboard Example
-<img src="Screenshots/dashboard_example.JPG" width="50%"/>
+<img src="Screenshots/dashboard_example.png" width="50%"/>
