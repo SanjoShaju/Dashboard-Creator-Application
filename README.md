@@ -24,5 +24,11 @@ The source code contains :
 - Chart JS
 
 ## Some Screenshots of the application ##
-* Home Screen of the app
+* Home Screen of the app(Opens with a black dashboar).
 <img src="Screenshots/dashboard_StartScreen.JPG" width="50%"/>
+* Tools Menu of the application
+<img src="Screenshots/dashboard_ToolsMenu.JPG" width="50%"/>
+* Add new data or open already created dashboards menu.
+<img src="Screenshots/dashboard_OpenNew.JPG" width="50%"/>
+* Dashboard Example
+<img src="Screenshots/dashboard_example.JPG" width="50%"/>
