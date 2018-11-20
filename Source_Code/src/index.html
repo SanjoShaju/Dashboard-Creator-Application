@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>DashBoard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--CSS Sheets-->
+    <link href="css/jquery-ui.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/header.css" rel="stylesheet">
+    <link href="css/draggableDiv.css" rel="stylesheet">
+    <link href="css/modal.css" rel="stylesheet">
+    <link href="css/tables.css" rel="stylesheet">
+
+    <!--Scripts-->
+    <!-- Insert this line above script imports  -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    
+    <!-- normal script imports etc  -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <!--<script src="js/jquery.searchableSelect.js"></script>-->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/Chart.min.js"></script>
+    <script src="js/chartjs-plugin-datalabels.min.js"></script>
+    <script src="js/jquery.csv.min.js"></script>
+    <script src="js/jquery.sortElements.js"></script>
+
+    <!-- Insert this line after script imports -->
+    <script>if (window.module) module = window.module;</script>
+</head>
+
+
+<body>
+  <!--Header class-->
+  <div class="header container">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="header-left">
+          <img src="img/icon/tools.png" title="Tools" onclick="open_opt_dialog();">
+          <img src="img/icon/open.png" title="Create a New File or upload data" onclick="open_new_dialog();">
+          <img src="img/icon/save.png" title="Save" onclick="document.getElementById('SaveDashboardModal').style.display = 'block';">
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="header-right">
+          <img src="img/icon/minimize.png" title="Minimize" onclick="minimize_browser_window();">
+          <img src="img/icon/enlarge.png" title="Maximize" onclick="maximize_browser_window();">
+          <img src="img/icon/close.png" title="Close" onclick="close_browser_window();">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Canvas Container-->
+  <div id="canvas_container" style="width: 5000px; height: 5000px; background-color: #ccc5c5; margin-top: 50px;">
+  </div>
+
+  <!--Modal Container for Save Dashboard-->
+  <div id="SaveDashboardModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close" onclick="document.getElementById('SaveDashboardModal').style.display = 'none';">&times;</span>
+        <h3>Save Dashboard</h3>
+      </div>
+      <div class="modal-body">
+        <div>
+          <input type="text" class="form-control" id ="save_name" style="text-align:center; margin: 5px 0 5px 0;" placeholder="Name the Dashboard here">
+        </div>
+      </div>
+      <div class="modal-footer">
+          <button id="saveDashboardBtn" type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+      
+  
+  <!-- Insert this line above script imports  -->
+  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+  <script>
+    function close_browser_window(){
+      let this_win = require('electron').remote.getCurrentWindow();
+      this_win.close();
+    }
+    function minimize_browser_window(){
+      let this_win = require('electron').remote.getCurrentWindow();
+      this_win.minimize();
+    }
+    function maximize_browser_window(){
+      let this_win = require('electron').remote.getCurrentWindow();
+      this_win.maximize();
+    }
+  </script>
+    
+  <!-- normal script imports etc  -->
+
+  <script src="js/draggableDiv.js"></script>
+  <script src="js/main_js.js"></script>
+  <script src="js/chart_creator.js"></script>
+  <script src="js/table_creator.js"></script>
+
+  <!-- Insert this line after script imports -->
+  <script>if (window.module) module = window.module;</script>
+</body>
+</html>

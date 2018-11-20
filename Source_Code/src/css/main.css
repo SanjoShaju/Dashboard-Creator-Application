@@ -1,0 +1,61 @@
+body {
+    font-family: "Lato", sans-serif;
+}
+select {
+    max-width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+/*---------------------------------------------------------------------*/
+
+/*---------------------------------------------------------------------*/
+.main{
+    margin-left: 200px;
+    padding: 0 5px;
+}
+
+
+
+/*---------------------------------------------------------------------*/
+/* Pop Up Form */
+
+
+/* The Close Button (x) */
+.close {
+    position: absolute;
+    right: 25px;
+    top: 0;
+    color: #000;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: red;
+    cursor: pointer;
+}
+
+/* Add Zoom Animation */
+.animate {
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s;
+}
+
+@-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)} 
+    to {-webkit-transform: scale(1)}
+}
+    
+@keyframes animatezoom {
+    from {transform: scale(0)} 
+    to {transform: scale(1)}
+}
+
+.container {
+    padding: 16px;
+    padding-top: 28px;
+}

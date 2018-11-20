@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--CSS Sheets-->
+    <link href="css/jquery-ui.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="css/header.css" rel="stylesheet">
+
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.csv.min.js"></script>
+    <script>if (window.module) module = window.module;</script>
+
+    <style>
+    #loader {
+        margin: 0 auto;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+    }
+    @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+    }
+    
+    </style>
+</head>
+
+
+<body>
+<!--Header class-->
+<div class="header container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="header-right">
+                <img src="img/icon/close.png" title="Close" onclick="close_browser_window();">
+            </div>
+        </div>
+    </div>
+</div>
+<div style="margin-top: 50px;"></div>
+<div id="New" class="tabcontent">
+    <div class="row" style="border-style: groove;border-width: 1px;border-radius: 5px;padding: 5px; margin: 5px 0;">
+
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn" id="Browse" onclick="upload()"style="width:553px;margin:0 20px 0 20px; float:left;"><img id="browse_img" style="width:20px;height:20px;margin-right:5px;" src="img/icon/folder.svg" title="Choose file folder">Browse</button>
+            </div>
+            <div class="w-100"></div>
+            <div class="col">
+                <input type="text" class="form-control" id="filepath" style="width:553px; margin:0 20px; padding-top:10px;">
+            </div>
+        </div>
+    </div>
+    <div class="row" id="loader_div" style="border-style: groove;border-width: 1px;border-radius: 5px;padding: 5px; margin: 5px 0;display: none;">
+        <div class="row">
+            <div id="loader"></div>
+            <div id="succesful_text" style="margin: 0 auto;font-weight:bold;text-align: center;">Files are being uploaded. Please wait!</div>
+        </div>
+    </div>
+    <div style="text-align: center;">-OR-</div>
+
+    <div class="row" style="border-style: groove;border-width: 1px;border-radius: 5px;padding: 5px; margin: 5px 0;">
+        <select class="form-control" id="dashboards_select" required>
+            <option>Choose a Dashboard</option>
+        </select>
+    
+    </div>
+</div><!--End of Chart options-->
+<!------------------------------------------------------------------------------------------------------------>
+
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+<script>
+function close_browser_window(){
+    let this_win = require('electron').remote.getCurrentWindow();
+    this_win.close();
+}
+var path = require("path");
+var filepath = path.join(__dirname, '../Dashboards/');
+const fs = require('fs');
+
+fs.readdir(filepath, (err, files) => {
+  files.forEach(file => {
+    $('#dashboards_select').append('<option value="'+file+'">'+file+'</option>');
+  });
+})
+
+$('#dashboards_select').on('change', function() {
+    if (window.confirm("Dashboard will be changed! Do you want to continue!"+ $('#dashboards_select').val())) {
+        var {ipcRenderer, remote} = require('electron');  
+        ipcRenderer.send('open_dashboard', path.parse($('#dashboards_select').val()).name);
+    };
+});
+
+function upload() {
+    const {dialog} = require('electron').remote
+    filepath = dialog.showOpenDialog({properties: ['openDirectory']})//for open folder dialog box
+
+    $('#filepath').val(filepath);
+    if($('#filepath').val() !== ''){
+        $('#loader_div').show();
+    }
+
+    // "excel_conversions.vbs" does the conversion of selected  files in the folder
+    require('child_process').exec('cmd /c @call cscript "excel_conversions.vbs" /filename:'+filepath+'\\', function(){
+        require('fs').readdir(filepath+'\\', (err, dir) => {
+            for (var i = 0, path; path = dir[i]; i++) {
+                switch (path) {
+                    case 'Fixture.csv':
+                        filename = "Fixture";
+                        processData(filename);                    
+                        break; 
+                    case 'Performance.csv':
+                        filename = "Performance";
+                        processData(filename);
+                        break; 
+                    case 'Planogram.csv':
+                        filename = "Planogram";
+                        processData(filename);
+                        break; 
+                    case 'Position.csv':
+                        filename = "Position";
+                        processData(filename);
+                        break; 
+                    case 'Product.csv':
+                        filename = "Product";
+                        processData(filename);
+                        break; 
+                }
+            }
+        });
+    });
+}//end of process function
+
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize('database', 'username', 'password', {
+    dialect: 'sqlite',
+    storage: './database.sqlite'
+  })
+sequelize
+    .authenticate()
+    .then(() => {
+        console.log('Connection has been established successfully.');
+    })
+    .catch(err => {
+        console.error('Unable to connect to the database:', err);
+    });
+
+function processData(filename) {
+    require('fs').readFile(filepath+"\\"+filename+".csv",'utf8', function(err,csv_data){
+
+        var data = [];
+        var headers = [];
+        data = $.csv.toArrays(csv_data);//'$.csv.toArray' is a speacial package function added called Jquery-csv
+        headers = data[0].map(i => '`'+i+'`' + ' VARCHAR(255)')
+        sql_create_table = "CREATE TABLE IF NOT EXISTS `"+filename+"`("+ headers.join(", ") +");";
+        sequelize.query(sql_create_table).then(myTableRows => {
+            sql_remove_prev_data = "DELETE FROM "+filename+";" ;
+
+            sequelize.query(sql_remove_prev_data).then(myTableRows => {
+                for(var i=1; i<data.length;i++){
+                    var lines=[];
+                    lines = data[i].map(i => '\"'+i+'\"');
+                    sql_insert = "INSERT INTO "+filename+" VALUES("+ lines.join(", ")+");";
+                    sequelize.query(sql_insert).then(myTableRows => {
+                        sql_query_done(data.length);
+                    })
+                }//for loop end
+            })//remove data query end
+        })//create table query end
+    });
+}//end of process data function
+
+
+var no_of_csv_read = 1;
+function sql_query_done(no_of_rows){
+    
+    var {ipcRenderer, remote} = require('electron');  
+    if(no_of_csv_read == (no_of_rows-1)){
+        ipcRenderer.send('sql_query_done', 'completed');
+        no_of_csv_read = 1;
+        $('#loader').hide();
+        $('#succesful_text').text('Successfully uploaded! You may close this window');
+        
+        
+        console.log('completed');
+    }else{
+        ipcRenderer.send('sql_query_done', no_of_csv_read);
+        $('#loader').show();
+        $('#succesful_text').text('Files are being uploaded. Please wait!');
+        no_of_csv_read+=1;
+    }
+}
+
+</script>
+<script>if (window.module) module = window.module;</script>
+
+
+</body>
+</html>

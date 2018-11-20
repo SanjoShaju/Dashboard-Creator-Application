@@ -1,0 +1,59 @@
+/*Sortable divs or List below*/
+
+.draggable {
+    margin:5px;
+    /*width: 200px;
+    height: 200px;*/
+    padding: 0 3px;
+    box-shadow: 5px 5px 5px grey;
+    position: absolute;/*Very Imp*/
+    
+    /*cursor:move;*/
+}
+/* I commented this
+#draggable {
+    cursor: move;
+}
+.draggable {
+    cursor:move;
+}
+*/
+
+.ui-icon-gripsmall-diagonal-se{
+    opacity: 0;
+}
+
+#close_drag, #edit_drag{
+    opacity: 0;
+    float:right;
+    z-index: 1;
+}
+
+#close_drag:hover, #edit_drag:hover{
+    opacity: 1;
+    cursor:pointer;
+}
+
+.canvas_head{
+    cursor:grab;
+}
+
+canvas{
+    cursor:default;
+}
+.sortable_list{
+    cursor:default;
+}
+
+/*Sortable divs or List*/
+.sortable_list{
+    float: left;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    list-style: none;
+    padding-left: 0;
+}
+.sortable_list li{
+    padding: 3px;
+    margin-top: 3px;
+}

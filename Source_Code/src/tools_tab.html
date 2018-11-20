@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--CSS Sheets-->
+    <link href="css/jquery-ui.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="css/header.css" rel="stylesheet">
+
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>if (window.module) module = window.module;</script>
+
+</head>
+
+
+<body>
+
+<!--
+<div class="tab">
+    <button class="tablinks active" onclick="openTab(event, 'Chart')">Chart</button>
+    <button class="tablinks" onclick="openTab(event, 'Table')">Table</button>
+    <button class="tablinks" onclick="openTab(event, 'Total')">Total</button>
+    <button class="tablinks" style="float: right;font-family:Arial Black, Gadget, sans-serif" onclick="close_browser_window();">X</button>
+</div>
+-->
+<!--Header class-->
+<div class="header container">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="header-left">
+                <img src="img/icon/graphmenu.png" title="Chart" onclick="openTab(event, 'Chart');">
+                <img src="img/icon/tablemenu.png" title="Table" onclick="openTab(event, 'Table');">
+                <img src="img/icon/totaltag.png" title="Total" onclick="openTab(event, 'Total');">
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="header-right">
+                <img src="img/icon/close.png" title="Close" onclick="close_browser_window();">
+            </div>
+        </div>
+    </div>
+</div>
+<div style="margin-top: 50px;"></div>
+<div id="Chart" class="tabcontent">
+    <div class="row" style="border-style: groove;border-width: 1px;border-radius: 5px;padding: 5px; margin: 5px 0;">
+        <!--Left container-->
+        <div class="container" style="width: 50%;float:left;">
+            <div class="row" >
+                <div class="col-sm-2" style="padding: 0;padding-top: 5px;font-weight:bold;">Chart Type:</div>
+                <div class="col-sm-10">
+                    <select class="form-control" id="chart_type" required>
+                        <option>Column Chart</option>
+                        <option>Bar Chart</option>
+                        <option>Line Chart</option>
+                        <option>Pie Chart</option>
+                        <option>Bubble Chart</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row" >
+                <div class="col-sm-2" style="padding: 0;padding-top: 5px;font-weight:bold;">Chart Object:</div>
+                <div class="col-sm-10">
+                    <select class="form-control" id="chart_object" required>
+                        <option>Choose chart object</option>
+                        <option>Fixture</option>
+                        <option>Performance</option>
+                        <option>Planogram</option>
+                        <option>Position</option>
+                        <option>Product</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <!--Right container-->
+        <div class="container" style="width: 50%;float:right;">
+            <div class="row" >
+                <div class="col-sm-2" style="padding: 0;padding-top: 5px;font-weight:bold;">Title Text:</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="title_text" placeholder="Enter the Title -OR- Leave this empty">
+                </div>
+            </div>
+            <div class="row" >
+                <div class="col-sm-2" style="padding: 0;padding-top: 5px;font-weight:bold;">Sub-title Text:</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="sub_title_text" placeholder="Enter the sub-title -OR- Leave this empty">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- End of title and chart type-->
+
+    <div class="row" style="border-style: groove;border-width: 1px;border-radius: 5px;padding: 5px; margin: 5px 0;">
+        <!--Left container-->
+        <div class="container" style="padding-right: 17px;width: 50%;float:left;">
+            <div class="row">
+                <div class="col-sm-2" style="padding: 0;padding-top: 5px;font-weight:bold;">Choose Chart Key :</div>
+                <div class="col-sm-10">
+                    <select class="form-control axis_select" id="chart_key" required>
+                        <option>Select Chart object first</option>
+                    </select>
+                </div>
+            </div>
+
+            
+        </div>
+        <!--Right container-->
+        <div class="container" style="padding-left: 17px; width: 50%;float:right;">
+            <div class="row">
+                <div style="padding: 0;padding-top: 5px;font-weight:bold;">Chart Key options : </div>
+            </div>
+            <div class="row">
+                <div style="padding:5px 10px;font-weight:bold;"><li>Show Top 
+                    <input type="text" id="show_top_n_grp" placeholder="n" style="text-align: center; width: 30px">
+                    groups only</li>
+                </div>
+            </div>
+            <div class="row">
+                <div style="padding-left:6px;"><label><input type="checkbox" id="sort_desc">Sort Descending</label></div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row" style="border-style: groove;border-width: 1px;border-radius: 5px;padding: 5px; margin: 5px 0;">
+        <div class="row chart_data">
+            <div class="container" style="width:50%;float:left;">
+                <div class="col" style="font-weight:bold;">Choose Chart data 1: </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control axis_select" id="chart_data_1" required>
+                        <option>Select Chart object first</option>
+                    </select>
+                </div>
+            </div>
+            <div class="container" style="width:25%;float:left;">
+                <div class="col" style="font-weight:bold;">Data Options : </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control" id="chart_data_opt_1" required>
+                        <option>No-Change</option>
+                        <option>Cumulative</option>
+                        <option>Percent</option>
+                    </select>
+                </div>
+            </div>
+            <div class="container" style="width:25%;float:left;">
+                <div class="col" style="font-weight:bold;">Roll up : </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control" id="chart_data_roll_1" required>
+                        <option>Sum</option>
+                        <option>Count</option>
+                        <option>Avg</option>
+                        <option>Min</option>
+                        <option>Max</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row chart_data" style="display:none;">
+            <div class="container" style="width:50%;float:left;">
+                <div class="col" style="font-weight:bold;">Choose Chart data 2: </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control axis_select" id="chart_data_2" required>
+                        <option>Select Chart object first</option>
+                    </select>
+                </div>
+            </div>
+            <div class="container" style="width:25%;float:left;">
+                <div class="col" style="font-weight:bold;">Data Options : </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control" id="chart_data_opt_2" required>
+                        <option>No-Change</option>
+                        <option>Cumulative</option>
+                        <option>Percent</option>
+                    </select>
+                </div>
+            </div>
+            <div class="container" style="width:25%;float:left;">
+                <div class="col" style="font-weight:bold;">Roll up : </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control" id="chart_data_roll_2" required>
+                        <option>Sum</option>
+                        <option>Count</option>
+                        <option>Avg</option>
+                        <option>Min</option>
+                        <option>Max</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row chart_data" style="display:none;">
+            <div class="container" style="width:50%;float:left;">
+                <div class="col" style="font-weight:bold;">Choose Chart data 3: </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control axis_select" id="chart_data_3" required>
+                        <option>Select Chart object first</option>
+                    </select>
+                </div>
+            </div>
+            <div class="container" style="width:25%;float:left;">
+                <div class="col" style="font-weight:bold;">Data Options : </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control" id="chart_data_opt_3" required>
+                        <option>No-Change</option>
+                        <option>Cumulative</option>
+                        <option>Percent</option>
+                    </select>
+                </div>
+            </div>
+            <div class="container" style="width:25%;float:left;">
+                <div class="col" style="font-weight:bold;">Roll up : </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control" id="chart_data_roll_3" required>
+                        <option>Sum</option>
+                        <option>Count</option>
+                        <option>Avg</option>
+                        <option>Min</option>
+                        <option>Max</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row chart_data" style="display:none;">
+            <div class="container" style="width:50%;float:left;">
+                <div class="col" style="font-weight:bold;">Choose Chart data 4: </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control axis_select" id="chart_data_4" required>
+                        <option>Select Chart object first</option>
+                    </select>
+                </div>
+            </div>
+            <div class="container" style="width:25%;float:left;">
+                <div class="col" style="font-weight:bold;">Data Options : </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control" id="chart_data_opt_4" required>
+                        <option>No-Change</option>
+                        <option>Cumulative</option>
+                        <option>Percent</option>
+                    </select>
+                </div>
+            </div>
+            <div class="container" style="width:25%;float:left;">
+                <div class="col" style="font-weight:bold;">Roll up : </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control" id="chart_data_roll_4" required>
+                        <option>Sum</option>
+                        <option>Count</option>
+                        <option>Avg</option>
+                        <option>Min</option>
+                        <option>Max</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row chart_data" style="display:none;">
+            <div class="container" style="width:50%;float:left;">
+                <div class="col" style="font-weight:bold;">Choose Chart data 5: </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control axis_select" id="chart_data_5" required>
+                        <option>Select Chart object first</option>
+                    </select>
+                </div>
+            </div>
+            <div class="container" style="width:25%;float:left;">
+                <div class="col" style="font-weight:bold;">Data Options : </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control" id="chart_data_opt_5" required>
+                        <option>No-Change</option>
+                        <option>Cumulative</option>
+                        <option>Percent</option>
+                    </select>
+                </div>
+            </div>
+            <div class="container" style="width:25%;float:left;">
+                <div class="col" style="font-weight:bold;">Roll up : </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control" id="chart_data_roll_5" required>
+                        <option>Sum</option>
+                        <option>Count</option>
+                        <option>Avg</option>
+                        <option>Min</option>
+                        <option>Max</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <img id="chart_data_add" style="width:15px;height:15px;float:right;margin:0 20px 0 10px;" src="img/icon/down_arrow.svg" title="Add more data">
+            <img id="chart_data_close" style="width:15px;height:15px;float:right;" src="img/icon/up-arrow.svg" title="Delete above data">
+        </div>
+    </div>
+
+    <div class="row" style="border-style: groove;border-width: 1px;border-radius: 5px;padding: 5px; margin: 5px 0;">
+        <div style="font-weight:bold;">Additional Chart options :</div>
+        <label class="checkbox-inline" style="width: 30%;"><input type="checkbox" id="show_legend">Show Legend</label>
+        <label class="checkbox-inline" style="width: 30%;"><input type="checkbox" id="show_grid">Show Grid</label>
+        <label class="checkbox-inline" style="width: 30%;"><input type="checkbox" id="show_values" checked>Show Values</label>
+    </div>
+    <div class="row" style="padding-top: 5px;margin:10px 1px; border-top:1px solid #D3D3D3;">
+        <button type="button" class="btn" id="chart_submit" style="margin-left:10px;float:right;">Submit</button>
+        <button type="button" class="btn" style="float:right;">Cancel</button>
+    </div>
+
+    
+</div><!--End of Chart options-->
+<!------------------------------------------------------------------------------------------------------------>
+
+
+<div id="Table" class="tabcontent" style="display:none;">
+    <div class="row" style="border-style: groove;border-width: 1px;border-radius: 5px;padding: 5px; margin: 5px 0;">
+        <div class="row" >
+            <div class="col-sm-2" style="padding-top: 5px;font-weight:bold;">Title Text:</div>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="table_title_text" placeholder="Enter the Title -OR- Leave this empty">
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-sm-2" style="padding-top: 5px;font-weight:bold;">Sub-title Text:</div>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="table_sub_title_text" placeholder="Enter the sub-title -OR- Leave this empty">
+            </div>
+        </div>
+    </div>
+  
+    <div class="row" style="border-style: groove;border-width: 1px;border-radius: 5px;padding: 5px; margin: 5px 0;">
+        <div class="row">
+            <div class="container" style="width:100%;float:left;">
+                <div class="col" style="font-weight:bold;">Choose Data Table: </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control" id="table_object" required>
+                        <option>Choose Data table</option>
+                        <option>Fixture</option>
+                        <option>Performance</option>
+                        <option>Planogram</option>
+                        <option>Position</option>
+                        <option>Product</option>
+                    </select>
+                </div>
+                <div class="w-100"></div>
+                <div style="padding-left:6px;"><label><input type="checkbox" id="show_whole_table">Show the whole table</label></div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="border-style: groove;border-width: 1px;border-radius: 5px;padding: 5px; margin: 5px 0;">
+        <div class="row">
+            <div class="container" id="column_name_container" style="width:100%;float:left;">
+                <div class="col" style="font-weight:bold;">Choose Column 1: </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control col_name">
+                        <option>Select Data table first</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <img id="table_data_add" style="width:15px;height:15px;float:right;margin:0 20px 0 10px;" src="img/icon/down_arrow.svg" title="Add more data">
+            <img id="table_data_close" style="width:15px;height:15px;float:right;" src="img/icon/up-arrow.svg" title="Delete above data">
+        </div>
+    </div>
+    <div class="row" style="padding-top: 5px;margin:10px 1px; border-top:1px solid #D3D3D3; float:bottom;">
+        <button type="button" class="btn" id="table_submit" style="margin-left:10px;float:right;">Submit</button>
+        <button type="button" class="btn" style="float:right;">Cancel</button>
+    </div>
+</div><!--End of Table options-->
+<!------------------------------------------------------------------------------------------------------------>
+
+<div id="Total" class="tabcontent" style="display:none;">
+    <div class="row" style="border-style: groove;border-width: 1px;border-radius: 5px;padding: 5px; margin: 5px 0;">
+        <div class="row" >
+            <div class="col-sm-2" style="padding-top: 5px;font-weight:bold;">Title Text:</div>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="total_title_text" placeholder="Enter the Title -OR- Leave this empty">
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-sm-2" style="padding-top: 5px;font-weight:bold;">Sub-title Text:</div>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="total_sub_title_text" placeholder="Enter the sub-title -OR- Leave this empty">
+            </div>
+        </div>
+    </div>
+    
+    <div class="row" style="border-style: groove;border-width: 1px;border-radius: 5px;padding: 5px; margin: 5px 0;">
+        <div class="row">
+            <div class="container" style="width:100%;float:left;">
+                <div class="col" style="font-weight:bold;">Choose Data Table: </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control" id="total_object" required>
+                        <option>Choose Data table</option>
+                        <option>Fixture</option>
+                        <option>Performance</option>
+                        <option>Planogram</option>
+                        <option>Position</option>
+                        <option>Product</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="border-style: groove;border-width: 1px;border-radius: 5px;padding: 5px; margin: 5px 0;">
+        <div class="row">
+            <div class="container" id="column_name_container" style="width:100%;float:left;">
+                <div class="col" style="font-weight:bold;">Choose Column to get total: </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <select class="form-control" id="total_col_name">
+                        <option>Select Data table first</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="border-style: groove;border-width: 1px;border-radius: 5px;padding: 5px; margin: 5px 0;">
+        <div class="row" style="padding-top: 5px;margin:5px 1px;">
+            <div style="font-weight:bold;">Additional options :</div>
+        </div>
+        <input id="spinner" name="value" style="width:25px;"><label class="checkbox-inline" style="width: 50%;">Increase font size</label>
+        <label class="checkbox-inline" style="width: 30%;"><input type="checkbox" id="make_bold" checked>Make text Bold</label>
+    </div>
+    <div class="row" style="padding-top: 5px;margin:10px 1px; border-top:1px solid #D3D3D3; float:bottom;">
+        <button type="button" class="btn" id="total_submit" style="margin-left:10px;float:right;">Submit</button>
+        <button type="button" class="btn" style="float:right;">Cancel</button>
+    </div>
+</div><!--End of Total options-->
+    
+
+<!------------------------------------------------------------------------------------------------------------>
+
+
+
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+<script>
+    
+function close_browser_window(){
+    console.log("close window clicked");
+    let this_win = require('electron').remote.getCurrentWindow();
+    console.log(this_win);
+    this_win.close();
+}
+
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize('database', 'username', 'password', {
+    // sqlite! now!
+    dialect: 'sqlite',
+
+    // the storage engine for sqlite
+    // - default ':memory:'
+    storage: './database.sqlite'
+})
+sequelize
+    .authenticate()
+    .then(() => {
+        console.log('Connection has been established successfully.');
+    })
+    .catch(err => {
+        console.error('Unable to connect to the database:', err);
+    });
+
+    var i= 0;
+    $('#chart_data_add').click(function(){ 
+        console.log("add clicked");
+        if(i<4){
+            $('.chart_data').eq(i+1).css("display", "block");
+            i+=1;
+        }        
+    });
+    $('#chart_data_close').click(function(){
+        $('.chart_data').eq(i).hide();
+        i-=1;
+    });
+
+    $('#chart_object').on('change', function() {
+        sequelize.query("PRAGMA table_info(" + this.value +")").then(myTableRows => {
+            arr = myTableRows[0];
+            document.querySelectorAll('.axis_select').forEach(function (element, index) {
+            element.innerHTML = "<option value='Choose an option'>Choose an option</option>";
+                for(var i = 0; i < arr.length; i++) {
+                    var opt = arr[i].name;
+                    element.innerHTML += "<option value=\"" + opt + "\">" + opt + "</option>";
+                }
+            });
+        });
+    });
+
+    const { ipcRenderer } = require('electron')
+    $('#chart_submit').click(function(){
+
+        //adding chart options to data_to_send 
+        data_to_send = {};
+        data_to_send.data_abt = 'chart';
+        data_to_send.chart_type = $("#chart_type option:selected").text();
+        data_to_send.chart_object = $("#chart_object option:selected").text();
+        data_to_send.title_text = $("#title_text").val();
+        data_to_send.sub_title_text = $("#sub_title_text").val();
+        data_to_send.chart_key = $("#chart_key option:selected").text();
+        data_to_send.show_top_n_grp = $("#show_top_n_grp").val();
+        data_to_send.sort_desc = $('#sort_desc').is(":checked") ? 1 : 0;
+        data_to_send.chart_data_1 = $("#chart_data_1 option:selected").text();
+        data_to_send.chart_data_2 = $("#chart_data_2 option:selected").text();
+        data_to_send.chart_data_3 = $("#chart_data_3 option:selected").text();
+        data_to_send.chart_data_4 = $("#chart_data_4 option:selected").text();
+        data_to_send.chart_data_5 = $("#chart_data_5 option:selected").text();
+        data_to_send.chart_data_opt_1 = $("#chart_data_opt_1 option:selected").text();
+        data_to_send.chart_data_opt_2 = $("#chart_data_opt_2 option:selected").text();
+        data_to_send.chart_data_opt_3 = $("#chart_data_opt_3 option:selected").text();
+        data_to_send.chart_data_opt_4 = $("#chart_data_opt_4 option:selected").text();
+        data_to_send.chart_data_opt_5 = $("#chart_data_opt_5 option:selected").text();
+        data_to_send.chart_data_roll_1 = $("#chart_data_roll_1 option:selected").text();
+        data_to_send.chart_data_roll_2 = $("#chart_data_roll_2 option:selected").text();
+        data_to_send.chart_data_roll_3 = $("#chart_data_roll_3 option:selected").text();
+        data_to_send.chart_data_roll_4 = $("#chart_data_roll_4 option:selected").text();
+        data_to_send.chart_data_roll_5 = $("#chart_data_roll_5 option:selected").text();
+        data_to_send.show_legend = $('#show_legend').is(":checked") ? 1 : 0;
+        data_to_send.show_grid = $('#show_grid').is(":checked") ? 1 : 0;
+        data_to_send.show_values = $('#show_values').is(":checked") ? 1 : 0;
+        data_to_send.no_of_chart_data = i;
+
+        //sends the data to the main browser window
+        ipcRenderer.send('sentData', data_to_send);
+    });
+
+
+
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+
+    var j= 1;
+    $('#table_data_add').click(function(){ 
+        console.log("add clicked");
+        j+=1;
+        var appendhtml = '<div id= "'+j +'"><div class="col" style="font-weight:bold;">Choose Column '+ j +': </div><div class="w-100"></div><div class="col">'+
+                            '<select class="form-control col_name" required><option>Choose column data</option></select></div></div>';
+        $('#column_name_container').append(appendhtml);
+        console.log($('#table_object')[0]);
+        get_table_columns($('#table_object')[0]);
+    });
+
+    $('#table_data_close').click(function(){
+        if(!(j<=1)){
+            $('#' + j).remove();
+            j-=1;
+        }
+    });
+
+    $('#table_object').on('change', function() {
+        get_table_columns(this);
+    });
+
+    $('#table_submit').click(function(){
+        //adding table options to data_to_send 
+        data_to_send = {};
+        data_to_send.data_abt = 'table';
+        data_to_send.table_title_text = $("#table_title_text").val();
+        data_to_send.table_sub_title_text = $("#table_sub_title_text").val();
+        data_to_send.table_object = $("#table_object option:selected").text();
+        data_to_send.show_whole_table = $('#show_whole_table').is(":checked") ? 1 : 0;
+        data_to_send.col_name = [];
+        /*while(j!==0){
+            data_to_send.col_name.push($(".col_name option:selected").eq(j).text())
+            j-+1;
+        }*/
+        document.querySelectorAll('.col_name').forEach(function (element, index) {
+            data_to_send.col_name.push(element.options[element.selectedIndex].text);
+        });
+        console.log(data_to_send);
+        //sends the data to the main browser window
+        ipcRenderer.send('sentData', data_to_send);
+    });
+
+    function get_table_columns(table_name){
+        console.log(table_name)
+        sequelize.query("PRAGMA table_info(" + table_name.value +")").then(myTableRows => {
+            arr = myTableRows[0];
+            document.querySelectorAll('.col_name').forEach(function (element, index) {
+            element.innerHTML = "<option value='Choose an option'>Choose an option</option>";
+                for(var i = 0; i < arr.length; i++) {
+                    var opt = arr[i].name;
+                    element.innerHTML += "<option value=\"" + opt + "\">" + opt + "</option>";
+                }
+            });
+        });
+        
+    }
+
+    var spinner = $( "#spinner" ).spinner();
+    spinner.spinner( "value", 25 );
+
+    $('#total_object').on('change', function() {
+        sequelize.query("PRAGMA table_info(" + this.value +")").then(myTableRows => {
+            arr = myTableRows[0];
+            append_html = "<option value='Choose an option'>Choose an option</option>";
+                for(var i = 0; i < arr.length; i++) {
+                    var opt = arr[i].name;
+                    append_html += "<option value=\"" + opt + "\">" + opt + "</option>";
+                }
+            $("#total_col_name").html(append_html);
+            append_html ='';
+        });
+    });
+
+    $('#total_submit').click(function(){
+        //adding table options to data_to_send 
+        data_to_send = {};
+        data_to_send.data_abt = 'total';
+        data_to_send.total_title_text = $("#total_title_text").val();
+        data_to_send.total_sub_title_text = $("#total_sub_title_text").val();
+        data_to_send.total_object = $("#total_object option:selected").text();
+        data_to_send.total_col_name = $("#total_col_name option:selected").text();
+        data_to_send.total_font_size = $("#spinner").val();
+        data_to_send.total_make_bold = $('#make_bold').is(":checked") ? 1 : 0;
+
+        console.log(data_to_send);
+        //sends the data to the main browser window
+        ipcRenderer.send('sentData', data_to_send);
+    });
+
+
+</script>
+<script>if (window.module) module = window.module;</script>
+
+
+</body>
+</html>
