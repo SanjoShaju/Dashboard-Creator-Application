@@ -3,7 +3,7 @@ This is a Electron JS Application that lets users create customized dashboards f
 ## How to set up ##
 - Just run Setup.exe to install the application on you computer.
 > Note -> This setup is only for windows 64 bit version. Also I haven't made certificates for the application, so windows defender will show Security warnings.
-- or in Sorce_Code folder npm command to start the application
+- or in Sorce_Code folder type npm start in terminal
 ```sh
 $ npm start
 ```
@@ -27,11 +27,14 @@ The source code contains :
 - Chart JS
 
 ## Some Screenshots of the application ##
-- Home Screen of the app(Opens with a black dashboar).
+- Home Screen of the app(Opens with a blank dashboard). -
 <img src="Screenshots/dashboard_StartScreen.JPG" width="50%"/>
-- Tools Menu of the application
+
+- Tools Menu of the application -
 <img src="Screenshots/dashboard_ToolsMenu.JPG" width="50%"/>
-- Add new data or open already created dashboards menu.
+
+- Add new data or open already created dashboards menu. -
 <img src="Screenshots/dashboard_OpenNew.jpg" width="50%"/>
-- Dashboard Example
+
+- Dashboard Example -
 <img src="Screenshots/dashboard_example.png" width="50%"/>
